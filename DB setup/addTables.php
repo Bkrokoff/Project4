@@ -35,7 +35,9 @@
 				email VARCHAR(45),				
 				creditCard INT(20),
 				creditType VARCHAR(20),
-				creditSecurity INT(4)
+				creditSecurity INT(4),
+				wishList VARCHAR(100),
+				newVisitor BIT(1) NOT NULL
 			);";
 			
 			
@@ -65,6 +67,25 @@
 			);";
 			
 			
+			$addAdmin = "INSERT INTO USERS(
+							username,
+							usrType,
+							password,
+							firstName,
+							lastName,
+							email
+						)
+						values(
+							'admin',
+							'admin',
+							'admin',
+							'MPadminF',
+							'MPadminL',
+							'MPadmin@madpropsgsu.com'
+						)
+						
+						;";
+			
 			$testEntry = "INSERT INTO
 							  PROPERTIES (
 								ownerID,
@@ -78,12 +99,14 @@
 								bedrooms,
 								garden,
 								parking,
-								value
+								value,
+								soldFor,
+								buyerID
 							  )
 							values(
 								'25',
-								'Cool House',
-								'123 One two lane',
+								'SoldForTest3',
+								'1234 One two lane',
 								'Atlanta',
 								'GA',
 								'30337',
@@ -92,17 +115,20 @@
 								'3',
 								'1',
 								'1',
-								'150000.00'
+								'150000.00',
+								'150000',
+								'5'
+								
 							  );";
 			
 			// Set the query variable here for what you want to do -Belogus
-			if($conn->query($propTable) === TRUE) {
+			if($conn->query($userTable) === TRUE) {
 				echo "User table created!";
 			} else {
 				"Error with creating table: " . $conn->error;
 			}
-			if($conn->query($testEntry) === TRUE) {
-				echo "User table created!";
+			if($conn->query($addAdmin) === TRUE) {
+				echo "User row created!";
 			} else {
 				"Error with creating table: " . $conn->error;
 			}			

@@ -2,22 +2,6 @@
 <?php
 session_start();
 
-			
-function SQLBitToYesNo($value) {
-	// Returns Yes Or No String based on bit value. 
-		if ($value == 1)
-			return "Yes";
-<<<<<<< HEAD
-		return "No";	
-}
-
-function moneyFormat($value) {
-	//Convert SQL DECIMAL to formatted dollar value string with commas and decimal.
-	return '$'.number_format($value, 2);
-=======
-		return "No";
->>>>>>> 44c0c4285a283356d6ba9f34bfab4635e70a60d9
-}
 
 function getConn() {
 	// Return conn object based on login info below. 
@@ -38,6 +22,20 @@ function getConn() {
 		return $conn;
 	}
 }
+		
+function SQLBitToYesNo($value) {
+	// Returns Yes Or No String based on bit value. 
+		if ($value == 1)
+			return "Yes";
+		return "No";	
+}
+
+function moneyFormat($value) {
+	//Convert SQL DECIMAL to formatted dollar value string with commas and decimal.
+	return '$'.number_format($value, 2);
+
+}
+
 
 function addUser() {
 	// take conn argument to set up user based on querey. Buyers get cc info, others do not. 
@@ -47,7 +45,7 @@ function addUser() {
 		$usrEntry = "INSERT INTO USERS (username, usrType, password, firstName, lastName, email, creditCard, creditType, creditSecurity)
 					values('"
 					.$_POST['username']."', '"
-					.$_POST['type'].".', '"
+					.$_POST['type']."', '"
 					.$_POST['password']."', '"
 					.$_POST['firstName']."', '"
 					.$_POST['lastName']."', '"
@@ -60,13 +58,12 @@ function addUser() {
 		$usrEntry = "INSERT INTO USERS (username, usrType, password, firstName, lastName, email)
 					values('"
 					.$_POST['username']."', '"
-					.$_POST['type'].".', '"
+					.$_POST['type']."', '"
 					.$_POST['password']."', '"
 					.$_POST['firstName']."', '"
 					.$_POST['lastName']."', '"
 					.$_POST['email']."');";
 	}
-	
 	
 	$_SESSION['username'] = $_POST['username'];
 	
@@ -94,7 +91,8 @@ function verifyUser($username, $password) {
 				id,
 				username,
 				usrType,
-				password
+				password,
+				newVisitor
 			FROM
 				USERS
 			WHERE
@@ -109,9 +107,11 @@ function verifyUser($username, $password) {
 	// Get row into a parsable format. Due to the way the table is designed there will only be one row
 	// This is because username is set to unique. 
 	$row = $result->fetch_array();
+	// Set up session varaibles. Used at various points.  
 	$_SESSION['userId'] = $row['id'];
 	$_SESSION['username'] = $row['username'];
 	$_SESSION['usrType'] = $row['usrType'];
+	$_SESSION['newVisitor'] = $row['newVisitor'];
 	
 	if(isset($_SESSION['userId'])) {
 		echo "User found!";
@@ -125,7 +125,7 @@ function verifyUser($username, $password) {
 }
 
 function selectDashboard($userType) {
-	if ($userType == "Admin") {
+	if ($userType == "admin") {
 		header("Location: admin.php"); 
 	}
 	else if ($userType == "seller") {
@@ -149,8 +149,8 @@ function addProperty() {
 		$propname = $_POST["propname"];
 		$address1 = $_POST["address1"];
 		$address2 = $_POST["address2"];
-		$city = $_POST["city"];
-		$state = $_POST["state"];
+		$city = strtoupper($_POST["city"]); //Cities to Proper Case. 
+		$state = strtoupper($_POST["state"]);
 		$zip = $_POST["zip"];
 		$date = $_POST["date"];
 		$size = $_POST["size"];
@@ -216,6 +216,5 @@ function addProperty() {
 		$conn->close();
 	}
 	
-
 }
 ?>
