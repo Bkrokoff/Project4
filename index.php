@@ -1,10 +1,6 @@
 <!DOCTYPE html>  
  
- <?php
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
-	
+ <?php	
 	include_once("SQL_Functions.php");
 	//start session
 	session_destroy();
@@ -32,7 +28,7 @@
     <body>
         <form class="loginBox" action="" method="post">
             <div class="houseLogo">
-                <img src="./images/houseLogo.png">
+                <a href="homePage.html"><img src="./images/houseLogo.png"></a>
             </div>
             <h1 class="login"> Login </h1>
             <input name="username" type="text" placeholder="Username" id="username" required>
